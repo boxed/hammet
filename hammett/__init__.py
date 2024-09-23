@@ -449,12 +449,12 @@ def finish():
             g.results[y.status] += 1
 
 
-def main(verbose=False, fail_fast=False, quiet=False, filenames=None, drop_into_debugger=False, match=None, durations=False, markers=None, disable_assert_analyze=False, module_unload=False, cwd=None, use_cache=False, pre_test_callback=None, post_test_callback=None):
-    params = main_setup(verbose=verbose, fail_fast=fail_fast, quiet=quiet, filenames=filenames, drop_into_debugger=drop_into_debugger, durations=durations, markers=markers, disable_assert_analyze=disable_assert_analyze, cwd=cwd, use_cache=use_cache, pre_test_callback=pre_test_callback, post_test_callback=post_test_callback)
+def main(verbose=False, fail_fast=False, quiet=False, filenames=None, drop_into_debugger=False, match=None, durations=False, markers=None, disable_assert_analyze=False, module_unload=False, cwd=None, use_cache=False, pre_test_callback=None, post_test_callback=None, capture_output=True, insert_cwd=True):
+    params = main_setup(verbose=verbose, fail_fast=fail_fast, quiet=quiet, filenames=filenames, drop_into_debugger=drop_into_debugger, durations=durations, markers=markers, disable_assert_analyze=disable_assert_analyze, cwd=cwd, use_cache=use_cache, pre_test_callback=pre_test_callback, post_test_callback=post_test_callback, capture_output=capture_output, insert_cwd=insert_cwd)
     return main_run_tests(match=match, module_unload=module_unload, **params)
 
 
-def main_setup(verbose=False, fail_fast=False, quiet=False, filenames=None, drop_into_debugger=False, durations=False, markers=None, disable_assert_analyze=False, cwd=None, use_cache=False, pre_test_callback=None, post_test_callback=None):
+def main_setup(verbose=False, fail_fast=False, quiet=False, filenames=None, drop_into_debugger=False, durations=False, markers=None, disable_assert_analyze=False, cwd=None, use_cache=False, pre_test_callback=None, post_test_callback=None, capture_output=True, insert_cwd=True):
     import sys
     if sys.version_info[:2] < (3, 6):
         print('hammett requires python 3.6 or later')
@@ -472,7 +472,7 @@ def main_setup(verbose=False, fail_fast=False, quiet=False, filenames=None, drop
     g.orig_cwd = cwd
     os.chdir(cwd)
 
-    if cwd not in sys.path:
+    if cwd not in sys.path and insert_cwd:
         sys.path.insert(0, cwd)
         clean_up_sys_path = True
 
@@ -488,6 +488,7 @@ def main_setup(verbose=False, fail_fast=False, quiet=False, filenames=None, drop
     g.use_cache = use_cache
     g.pre_test_callback = pre_test_callback
     g.post_test_callback = post_test_callback
+    g.capture_output = capture_output
 
     from hammett.impl import read_settings
     read_settings()
@@ -768,6 +769,7 @@ def main_cli(args=None):
     parser.add_argument('--multi-experimental', dest='multi_process', action='store_true', default=False)
     parser.add_argument('-k', dest='match', default=None)
     parser.add_argument('-m', dest='markers', default=None)
+    parser.add_argument('-s', dest='capture_output', default=None)
     parser.add_argument('--use-cache', dest='use_cache', default=False, help='The cache is an experimental feature to run only relevant changes based on looking at what files have been changed.')
     parser.add_argument('--durations', dest='durations', action='store_true', default=False)
     parser.add_argument('--no-assert-analyze', dest='disable_assert_analyze', action='store_true', default=False)
@@ -790,6 +792,7 @@ def main_cli(args=None):
         markers=args.markers,
         disable_assert_analyze=args.disable_assert_analyze,
         use_cache=args.use_cache,
+        capture_output=args.capture_output,
     )
 
 

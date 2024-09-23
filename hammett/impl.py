@@ -533,8 +533,9 @@ def run_test(_name, _f, _module_request, **kwargs):
     if hammett.g.verbose:
         hammett.print(_name + '...', end='', flush=True)
     try:
-        sys.stdout = hammett.g.hijacked_stdout
-        sys.stderr = hammett.g.hijacked_stderr
+        if hammett.g.capture_output:
+            sys.stdout = hammett.g.hijacked_stdout
+            sys.stderr = hammett.g.hijacked_stderr
 
         if hammett.g.durations:
             start = datetime.now()
@@ -552,12 +553,14 @@ def run_test(_name, _f, _module_request, **kwargs):
             duration = datetime.now() - start
             hammett.g.durations_results.append((_name, duration, setup_time))
 
-        sys.stdout = prev_stdout
-        sys.stderr = prev_stderr
+        if hammett.g.capture_output:
+            sys.stdout = prev_stdout
+            sys.stderr = prev_stderr
         status = SUCCESS
     except KeyboardInterrupt:
-        sys.stdout = prev_stdout
-        sys.stderr = prev_stderr
+        if hammett.g.capture_output:
+            sys.stdout = prev_stdout
+            sys.stderr = prev_stderr
 
         hammett.print()
         hammett.print('ABORTED')
@@ -565,13 +568,15 @@ def run_test(_name, _f, _module_request, **kwargs):
         hammett.g.should_stop = True
         return
     except SkipTest:
-        sys.stdout = prev_stdout
-        sys.stderr = prev_stderr
+        if hammett.g.capture_output:
+            sys.stdout = prev_stdout
+            sys.stderr = prev_stderr
 
         status = SKIPPED
     except:
-        sys.stdout = prev_stdout
-        sys.stderr = prev_stderr
+        if hammett.g.capture_output:
+            sys.stdout = prev_stdout
+            sys.stderr = prev_stderr
 
         import traceback
         stack_trace = traceback.format_exc()
