@@ -1,20 +1,31 @@
 <component name="ProjectDictionaryState">
   <dictionary name="boxed">
     <words>
+      <w>addfinalizer</w>
       <w>addini</w>
       <w>addinivalue</w>
       <w>addoption</w>
+      <w>argnames</w>
+      <w>argvalues</w>
       <w>autoclear</w>
       <w>conftest</w>
       <w>conftests</w>
+      <w>dirpath</w>
       <w>excinfo</w>
+      <w>fixturenames</w>
+      <w>funcargnames</w>
+      <w>getfixturevalue</w>
       <w>getini</w>
+      <w>hookimpl</w>
       <w>inicfg</w>
       <w>optnames</w>
+      <w>purebasename</w>
       <w>pytest</w>
       <w>pytestmark</w>
       <w>sessionstart</w>
       <w>skipif</w>
+      <w>workerid</w>
+      <w>workerinput</w>
     </words>
   </dictionary>
 </component>
