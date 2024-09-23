@@ -1,6 +1,13 @@
 Changelog
 ---------
 
+1.10.0 (2024-09-23)
+~~~~~~~~~~~~~~~~~~~
+
+* New programmatic option for not insert cwd into sys.path when running
+
+* Test names have the same syntax as pytest
+
 0.9.4 (2023-03-19)
 ~~~~~~~~~~~~~~~~~~
 
